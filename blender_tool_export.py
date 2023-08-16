@@ -10,21 +10,20 @@ lines = c.readlines()
 for line in lines:
     line = line.split("=")
     var_name = line[0]
-    kwargs[var_name] = line[1].replace("\n", "")
-print(kwargs)
+    kwargs[var_name] = line[1]
 
-name = bpy.path.basename(bpy.context.blend_data.filepath)
+name = bpy.path.basename(bpy.context.blend_data.filepath).replace(".blend", "")
 
 def export_ass(fbx_dir):
     bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx")
     os.system(f"{kwargs['h3ek']}\\tool_fast.exe fbx-to-ass \"{fbx_dir}\\{name}.fbx\" \"{fbx_dir}\\{name}.ass\"")
 
 def build_structure_from_blend():
-    fbx_dir = f"{root_dir}{kwargs['blender_directory']}"
+    fbx_dir = f"{root_dir}\\{kwargs['blender_directory']}"
     export_ass(fbx_dir)
-    os.system(f"xcopy \"{fbx_dir}\\{name}.ass\" \"{kwargs['h3ek']}\\{kwargs['blender_directory']}\\structure\\\"")
-    os.system(f"{kwargs['h3ek']}\\tool_fast.exe structure {kwargs['tag_directories']}\\structure\\")
-    os.system("build.cmd")
+    #os.system(f"xcopy \"{fbx_dir}\\{name}.ass\" \"{kwargs['h3ek']}\\{kwargs['blender_directory']}\\structure\\\"")
+    #os.system(f"{kwargs['h3ek']}\\tool_fast.exe structure {kwargs['tag_directories']}\\structure\\")
+    #os.system("build.cmd")
     
     return {'FINISHED'}
     
