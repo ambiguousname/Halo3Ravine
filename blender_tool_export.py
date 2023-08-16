@@ -16,7 +16,7 @@ name = ""
 tool_path = ""
 
 def export_ass(fbx_dir):
-    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx")
+    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx", global_scale=0.3, axis_forward='-Z', axis_up='Y')
     fbx_from = os.path.realpath(f"{fbx_dir}\\{name}.fbx")
     ass_to = os.path.realpath(f"{fbx_dir}\\{name}.ass")
     subprocess.run([tool_path, 'fbx-to-ass', fbx_from, ass_to])
@@ -42,7 +42,7 @@ class BlendToStructureExporter(Operator):
         global kwargs
         global name
         global tool_path
-        root_dir = os.path.realpath(__file__ + "\\..\\..\\")
+        root_dir = bpy.path.abspath("//")
         c = open(root_dir + "\\config.ini", "r")
         lines = c.readlines()
         for line in lines:
