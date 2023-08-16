@@ -6,7 +6,8 @@ import subprocess
 
 bl_info = {
     "name": "Halo Export Tool",
-    "category": "Object"
+    "blender": (3,6,1),
+    "category": "Object",
 }
 
 kwargs = {}
