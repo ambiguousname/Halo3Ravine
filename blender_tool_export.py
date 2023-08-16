@@ -25,8 +25,11 @@ def export_ass(fbx_dir):
 def build_structure_from_blend():
     fbx_dir = f"{root_dir}\\{kwargs['blender_directory']}"
     export_ass(fbx_dir)
-    subprocess.run(["xcopy", f"{fbx_dir}\\{name}.ass", "{kwargs['h3ek']}\\{kwargs['blender_directory']}\\structure"])
-    subprocess.run([tool_path, "structure", f"{kwargs['tag_directories']}\\structure"])
+    subprocess.run(["xcopy", "/y", "/f", f"{fbx_dir}\\{name}.ass", f"{kwargs['h3ek']}\\{kwargs['blender_directory']}"])
+    os.chdir(kwargs['h3ek'])
+    struct_directory = os.path.normpath(kwargs['tag_directories'] + "\\structure\\" + name + ".ass")
+    subprocess.run(["tool_fast.exe", "structure", struct_directory])
+    os.chdir(root_dir)
     subprocess.run("build.cmd")
     
     return {'FINISHED'}
