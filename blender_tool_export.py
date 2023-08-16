@@ -3,26 +3,28 @@ from bpy.types import Operator, KeyMap
 import bpy
 import os
 
-root_dir = "../../../../../"
-editing_kit = ""
-c = open(root_dir + "config.ini", "r")
+root_dir = os.path.realpath(__file__ + "\\..\\..\\")
+kwargs = {}
+c = open(root_dir + "\\config.ini", "r")
 lines = c.readlines()
 for line in lines:
     line = line.split("=")
-    name = line[0]
-    if name == "h3ek":
-        editing_kit = line[1]
+    var_name = line[0]
+    kwargs[var_name] = line[1].replace("\n", "")
+print(kwargs)
 
 name = bpy.path.basename(bpy.context.blend_data.filepath)
 
-def export_ass():
-    bpy.ops.export_scene.fbx()
-    os.system(editing_kit + "\\tool_fast.exe fbx-to-ass \"" + os.getcwd() + "\\" + name + ".fbx\" \"" + os.getcwd() + "\\" + name + ".ass\"")
+def export_ass(fbx_dir):
+    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx")
+    os.system(f"{kwargs['h3ek']}\\tool_fast.exe fbx-to-ass \"{fbx_dir}\\{name}.fbx\" \"{fbx_dir}\\{name}.ass\"")
 
 def build_structure_from_blend():
-    export_ass()
-    os.system("xcopy \"" + name + ".ass\" \"" + editing_kit + "\\data\\levels\\mod_levels\\" + name + "\\structure\\\"")
-    os.system(editing_kit + "\\tool_fast.exe structure levels\\mod_levels\\" + name + "\\structure\\")
+    fbx_dir = f"{root_dir}{kwargs['blender_directory']}"
+    export_ass(fbx_dir)
+    os.system(f"xcopy \"{fbx_dir}\\{name}.ass\" \"{kwargs['h3ek']}\\{kwargs['blender_directory']}\\structure\\\"")
+    os.system(f"{kwargs['h3ek']}\\tool_fast.exe structure {kwargs['tag_directories']}\\structure\\")
+    os.system("build.cmd")
     
     return {'FINISHED'}
     
