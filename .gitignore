@@ -1,2 +1,4 @@
 # Lighting can get wayyy too big for git to handle, so you'll just have to build it for fresh clones. I'll make a script to build it later, or something.
 ravine_lightmap*.bitmap
+reports
+gamestate.txt

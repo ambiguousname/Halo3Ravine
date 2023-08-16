@@ -4,17 +4,15 @@ import bpy
 import os
 import subprocess
 
-root_dir = os.path.realpath(__file__ + "\\..\\..\\")
-kwargs = {}
-c = open(root_dir + "\\config.ini", "r")
-lines = c.readlines()
-for line in lines:
-    line = line.split("=")
-    var_name = line[0]
-    kwargs[var_name] = line[1].replace("\n", "")
+bl_info = {
+    "name": "Halo Export Tool",
+    "category": "Object"
+}
 
-name = bpy.path.basename(bpy.context.blend_data.filepath).replace(".blend", "")
-tool_path = os.path.realpath(f"{kwargs['h3ek']}\\tool_fast.exe")
+kwargs = {}
+root_dir = ""
+name = ""
+tool_path = ""
 
 def export_ass(fbx_dir):
     bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx")
@@ -39,6 +37,20 @@ class BlendToStructureExporter(Operator):
     bl_label = "Export Structure"
     
     def execute(self, context):
+        global root_dir
+        global kwargs
+        global name
+        global tool_path
+        root_dir = os.path.realpath(__file__ + "\\..\\..\\")
+        c = open(root_dir + "\\config.ini", "r")
+        lines = c.readlines()
+        for line in lines:
+            line = line.split("=")
+            var_name = line[0]
+            kwargs[var_name] = line[1].replace("\n", "")
+            
+        name = bpy.path.basename(bpy.context.blend_data.filepath).replace(".blend", "")
+        tool_path = os.path.realpath(f"{kwargs['h3ek']}\\tool_fast.exe")
         return build_structure_from_blend()
     
 def blend_structure_export(self, context):
