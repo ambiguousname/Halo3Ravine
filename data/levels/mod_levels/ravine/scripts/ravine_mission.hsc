@@ -1,5 +1,15 @@
 (global vehicle vh_start_phantom NONE)
 
+(script startup initial_wave
+    (sleep_until 
+        (or 
+            (= (ai_living_count start_squad) 0)
+            (volume_test_objects start_phantom_vol (players))
+        )
+    )
+    (ai_place start_phantom)
+)
+
 (script command_script cs_start_phantom
     ;(if debug (print "Spawn Start Phantom"))
     (set vh_start_phantom (ai_vehicle_get_from_starting_location start_phantom/phantom))
@@ -7,7 +17,7 @@
             (sleep 30)
     (ai_vehicle_enter_immediate start_phantom_01 vh_start_phantom "phantom_p_l")
 
-	(cs_vehicle_speed .5)
+	(cs_vehicle_speed 1)
     (cs_fly_by Phantom_Start/p0)
     (cs_fly_by Phantom_Start/p1)
     (cs_fly_by Phantom_Start/p2)
