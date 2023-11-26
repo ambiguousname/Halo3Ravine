@@ -18,6 +18,14 @@ for %%a in (%tag_directories%) do (
 )
 
 echo -----------------
+echo Copying from H3EK fragments
+echo -----------------
+
+for %%a in (%structures%) do (
+    xcopy /s /y "%h3ek%\data\%structures%\*_fragments.hsc" .\data\
+)
+
+echo -----------------
 echo Copying to H3EK data...
 echo -----------------
 
