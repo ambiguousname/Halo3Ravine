@@ -17,7 +17,7 @@ name = ""
 tool_path = ""
 
 def export_ass(fbx_dir):
-    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx", global_scale=0.3, axis_forward='-Z', axis_up='Y', use_active_collection=True)
+    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx", global_scale=0.3, axis_forward='-Z', axis_up='Y', use_active_collection=True, use_mesh_modifiers=True)
     fbx_from = os.path.realpath(f"{fbx_dir}\\{name}.fbx")
     ass_to = os.path.realpath(f"{fbx_dir}\\{name}.ass")
     subprocess.run([tool_path, 'fbx-to-ass', fbx_from, ass_to])
@@ -27,9 +27,9 @@ def build_structure_from_blend():
     export_ass(fbx_dir)
     subprocess.run(["xcopy", "/y", "/f", f"{fbx_dir}\\{name}.ass", f"{kwargs['h3ek']}\\{kwargs['blender_directory']}"])
     os.chdir(kwargs['h3ek'])
-    struct_directory = os.path.normpath(kwargs['tag_directories'] + "\\structure\\" + struct_name + ".ass")
+    struct_directory = os.path.normpath(kwargs['tag_directories'])
     subprocess.run(["tool_fast.exe", "structure-seams", struct_directory])
-    subprocess.run(["tool_fast.exe", "structure", struct_directory])
+    subprocess.run(["tool_fast.exe", "structure", struct_directory + "\\structure\\" + name + ".ass"])
     os.chdir(root_dir)
     subprocess.run("build.cmd")
     
