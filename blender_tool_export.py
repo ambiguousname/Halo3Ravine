@@ -9,14 +9,14 @@ bl_info = {
     "blender": (3,6,1),
     "category": "Object",
 }
-
+a
 kwargs = {}
 root_dir = ""
 name = ""
 tool_path = ""
 
 def export_ass(fbx_dir):
-    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx", global_scale=0.3, axis_forward='-Z', axis_up='Y')
+    bpy.ops.export_scene.fbx(filepath=fbx_dir + name + ".fbx", global_scale=0.3, axis_forward='-Z', axis_up='Y', use_active_collection=True)
     fbx_from = os.path.realpath(f"{fbx_dir}\\{name}.fbx")
     ass_to = os.path.realpath(f"{fbx_dir}\\{name}.ass")
     subprocess.run([tool_path, 'fbx-to-ass', fbx_from, ass_to])
@@ -55,7 +55,7 @@ class BlendToStructureExporter(Operator):
         return build_structure_from_blend()
     
 def blend_structure_export(self, context):
-    self.layout.operator(BlendToStructureExporter.bl_idname, text=".structure tag from geometry")
+    self.layout.operator(BlendToStructureExporter.bl_idname, text=".structure tag from collection")
 
 def register():
     bpy.utils.register_class(BlendToStructureExporter)

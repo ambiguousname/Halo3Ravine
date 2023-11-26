@@ -2,7 +2,6 @@
 
 (script command_script deploy
     (sleep 100)
-    (print "TEST")
     (cs_enable_pathfinding_failsafe TRUE)
 	(ai_activity_abort ai_current_actor)
 )
