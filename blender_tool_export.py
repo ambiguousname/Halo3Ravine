@@ -9,9 +9,10 @@ bl_info = {
     "blender": (3,6,1),
     "category": "Object",
 }
-a
+
 kwargs = {}
 root_dir = ""
+struct_name = ""
 name = ""
 tool_path = ""
 
@@ -26,7 +27,8 @@ def build_structure_from_blend():
     export_ass(fbx_dir)
     subprocess.run(["xcopy", "/y", "/f", f"{fbx_dir}\\{name}.ass", f"{kwargs['h3ek']}\\{kwargs['blender_directory']}"])
     os.chdir(kwargs['h3ek'])
-    struct_directory = os.path.normpath(kwargs['tag_directories'] + "\\structure\\" + name + ".ass")
+    struct_directory = os.path.normpath(kwargs['tag_directories'] + "\\structure\\" + struct_name + ".ass")
+    subprocess.run(["tool_fast.exe", "structure-seams", struct_directory])
     subprocess.run(["tool_fast.exe", "structure", struct_directory])
     os.chdir(root_dir)
     subprocess.run("build.cmd")
@@ -41,6 +43,7 @@ class BlendToStructureExporter(Operator):
         global root_dir
         global kwargs
         global name
+        global struct_name
         global tool_path
         root_dir = bpy.path.abspath("//")
         c = open(root_dir + "\\config.ini", "r")
@@ -49,8 +52,9 @@ class BlendToStructureExporter(Operator):
             line = line.split("=")
             var_name = line[0]
             kwargs[var_name] = line[1].replace("\n", "")
-            
-        name = bpy.path.basename(bpy.context.blend_data.filepath).replace(".blend", "")
+        
+        struct_name = bpy.path.basename(bpy.context.blend_data.filepath).replace(".blend", "")
+        name = struct_name + "_" + bpy.context.view_layer.active_layer_collection.name
         tool_path = os.path.realpath(f"{kwargs['h3ek']}\\tool_fast.exe")
         return build_structure_from_blend()
     
